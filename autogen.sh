@@ -42,7 +42,7 @@ if [ "$acWorks" != yes ] ; then
 fi
 rm -rf .tmp
 
-# We cannot use "find . -name 'configre.in'" to locate configure.acs
+# We cannot use "find . -name 'configure.in'" to locate configure.acs
 # because "." is the working directory not the top-level MPE2 source
 # directory.  So we use the full-pathname of this script to locate the
 # MPE2's top-level directory.  'dirname' does not return the full-pathname
