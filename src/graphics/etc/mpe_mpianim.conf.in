@@ -2,7 +2,7 @@ MPE_INCDIR="@includebuild_dir@"
 MPE_LIBDIR="@libbuild_dir@"
 MPE_ETCDIR="@etcbuild_dir@"
 
-MPE_ANIM_LIBS="@ANIM_LIBS@"
+MPE_ANIM_LIBS="-lm @ANIM_LIBS@ -lm"
 
 if [ -n "$FC" -o -n "$F77" ] ; then
     . $MPE_ETCDIR/mpe_f77env.conf

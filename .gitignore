@@ -83,3 +83,8 @@ src/slog2sdk/trace_sample/src/.libs/
 src/slog2sdk/trace_sample/src/libTraceInput.la
 src/slog2sdk/trace_sample/src/logformat_trace_InputLog.lo
 src/slog2sdk/trace_sample/src/trace_impl.lo
+src/graphics/contrib/life/life_g
+src/graphics/contrib/mandel/pmandel
+src/graphics/contrib/test/cpi_anim
+src/graphics/contrib/test/cxgraphics
+src/graphics/contrib/test/fxgraphics
