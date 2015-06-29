@@ -72,7 +72,7 @@ PAC_MAKE_VPATH
 AC_SUBST(MAKE)
  
 dnl If we are relying on vpath and no vpath is set, then we must exit
-if test ! -s include/mpe.h -a -z "$VPATH" ; then
+if test ! -s "${top_srcdir}/include/mpe.h" -a -z "$VPATH" ; then
     AC_MSG_ERROR( [No virtual MAKE path command found.
 	You may need to set your make command
 	The GNU make (sometimes available as gnumake) can be used.] )
@@ -88,15 +88,22 @@ AC_SUBST(CPRP)
 AC_SUBST(RM)
 AC_SUBST(MV)
 
-AC_ARG_ENABLE( strict,
-[--enable-strict                    - Turn on strict compilation testing
-                                     when using gcc],,enable_strict=no )
+AC_ARG_ENABLE( [strict],
+	       [AC_HELP_STRING([--enable-strict],
+			       [Turn on strict compilation testing when using gcc])],
+	       [enable_strict="$enableval"],
+	       [enable_strict="no"] )
 dnl
-AC_ARG_ENABLE( g,
-[--enable-g                         - Turn on/off the compilation flag -g.
-                                     The default is enable=no.],
-[if test "$enable_g" != "no" ; then enable_g=yes ; fi],
-[enable_g=no] )
+AC_ARG_ENABLE( [g],
+	       [AC_HELP_STRING([--enable-g], 
+	       		       [Turn on/off the compilation flag -g (debug).
+                               The default is enable=no.])],
+			       [case "${enableval}" in
+			             yes) enable_g=yes ;;
+      				     no)  enable_g=no ;;
+      				     *)   AC_MSG_ERROR([bad value ${enableval} for --enable-g (only yes or no)]) ;;
+   				     esac],
+			       [enable_g=no] )
 
 dnl MPE_BUILD_FORTRAN2C=yes means that ALL subpackages will be building
 dnl the fortran2c wrapper libraries.  This does not necessarily mean that
@@ -402,38 +409,39 @@ selected_pkgs=""
 
 if test "$enable_misc" = "yes" -a -s $srcdir/src/misc/configure ; then
     selected_pkgs="$selected_pkgs misc"
-    AC_CONFIG_SUBDIRS(src/misc)
+    AC_CONFIG_SUBDIRS([src/misc])
 fi
 if test "$enable_callstack" = "yes" -a -s $srcdir/src/callstack/configure ; then
     selected_pkgs="$selected_pkgs callstack"
-    AC_CONFIG_SUBDIRS(src/callstack)
+    AC_CONFIG_SUBDIRS([src/callstack])
 fi
 if test "$enable_logging" = "yes" -a -s $srcdir/src/logging/configure ; then
     selected_pkgs="$selected_pkgs logging"
-    AC_CONFIG_SUBDIRS(src/logging)
+    AC_CONFIG_SUBDIRS([src/logging])
 fi
 if test "$enable_wrappers" = "yes" -a -s $srcdir/src/wrappers/configure ; then
     selected_pkgs="$selected_pkgs wrappers"
-    AC_CONFIG_SUBDIRS(src/wrappers)
+    AC_CONFIG_SUBDIRS([src/wrappers])
 fi
 if test "$enable_graphics" = "yes" -a -s $srcdir/src/graphics/configure ; then
     selected_pkgs="$selected_pkgs graphics"
-    AC_CONFIG_SUBDIRS(src/graphics)
+    AC_CONFIG_SUBDIRS([src/graphics])
 fi
 if test "$enable_collchk" = "yes" -a -s $srcdir/src/collchk/configure ; then
     selected_pkgs="$selected_pkgs collchk"
-    AC_CONFIG_SUBDIRS(src/collchk)
+    AC_CONFIG_SUBDIRS([src/collchk])
 fi
 
 dnl  Determine if the slog2sdk directory is going to be configured.
 AC_ARG_ENABLE( slog2,
-[--enable-slog2{=build}             - Configure all the SLOG-2 tools.
+AC_HELP_STRING([--enable-slog2{=build}             - Configure all the SLOG-2 tools.
                                      --enable-slog2 without any argument will
                                      use the prebuilt jar files.
                                      --enable-slog2=build will rebuild all the
                                      jar files from the source code.
-                                     The default is enable=yes.], ,
-enable_slog2=yes )
+                                     The default is enable=yes.]), 
+				     [enable_slog2=$enableval],
+				     [enable_slog2=yes] )
 
 
 dnl if SLOG-2 is here, configure it
@@ -454,7 +462,7 @@ if test -s $srcdir/$slog2_dirname/configure ; then
             slog2_enable_sample=no
             export slog2_enable_sample
         fi
-        AC_CONFIG_SUBDIRS(src/slog2sdk)
+        AC_CONFIG_SUBDIRS([src/slog2sdk])
     fi
 fi
 
@@ -821,34 +829,43 @@ export mpe_enable_softerror
 
 
 AC_OUTPUT_COMMANDS( [
-if test ! -x ./sbin/mpeinstall -a -s ./sbin/mpeinstall ; then
-    chmod u+x ./sbin/mpeinstall
+if test ! -x ${top_builddir}/sbin/mpeinstall -a -s ${top_builddir}/sbin/mpeinstall ; then
+    chmod u+x ${top_builddir}/sbin/mpeinstall
 fi
-if test ! -x ./sbin/mpecheckinstall -a -s ./sbin/mpecheckinstall ; then
-    chmod u+x ./sbin/mpecheckinstall
+if test ! -x ${top_builddir}/sbin/mpecheckinstall -a -s ${top_builddir}/sbin/mpecheckinstall ; then
+    chmod u+x ${top_builddir}/sbin/mpecheckinstall
 fi
-if test ! -x ./sbin/mpecheckbuild -a -s ./sbin/mpecheckbuild ; then
-    chmod u+x ./sbin/mpecheckbuild
+if test ! -x ${top_builddir}/sbin/mpecheckbuild -a -s ${top_builddir}/sbin/mpecheckbuild ; then
+    chmod u+x ${top_builddir}/sbin/mpecheckbuild
 fi
-if test ! -x ./sbin/mpetestlink -a -s ./sbin/mpetestlink ; then
-    chmod u+x ./sbin/mpetestlink
+if test ! -x ${top_builddir}/sbin/mpetestlink -a -s ${top_builddir}/sbin/mpetestlink ; then
+    chmod u+x ${top_builddir}/sbin/mpetestlink
 fi
-if test ! -x ./sbin/mpetestexec -a -s ./sbin/mpetestexec ; then
-    chmod u+x ./sbin/mpetestexec
+if test ! -x ${top_builddir}/sbin/mpetestexec -a -s ${top_builddir}/sbin/mpetestexec ; then
+    chmod u+x ${top_builddir}/sbin/mpetestexec
 fi
-if test ! -x ./sbin/mpetestexeclog -a -s ./sbin/mpetestexeclog ; then
-    chmod u+x ./sbin/mpetestexeclog
+if test ! -x ${top_builddir}/sbin/mpetestexeclog -a -s ${top_builddir}/sbin/mpetestexeclog ; then
+    chmod u+x ${top_builddir}/sbin/mpetestexeclog
 fi
-if test ! -x ./bin/mpecc -a -s ./bin/mpecc ; then
-    chmod a+x ./bin/mpecc
+if test ! -x ${top_builddir}/bin/mpecc -a -s ${top_builddir}/bin/mpecc ; then
+    chmod a+x ${top_builddir}/bin/mpecc
 fi
-if test ! -x ./bin/mpefc -a -s ./bin/mpefc ; then
-    chmod a+x ./bin/mpefc
+if test ! -x ${top_builddir}/bin/mpefc -a -s ${top_builddir}/bin/mpefc ; then
+    chmod a+x ${top_builddir}/bin/mpefc
 fi
 ] )
-AC_OUTPUT( Makefile sbin/mpetestlink sbin/mpetestexec sbin/mpetestexeclog \
-           sbin/mpeinstall sbin/mpecheckinstall sbin/mpecheckbuild \
-           etc/mpe_help.conf etc/mpe_f77env.conf $mpe_compilers )
+AC_CONFIG_FILES([
+	Makefile
+	sbin/mpetestlink
+	sbin/mpetestexec
+	sbin/mpetestexeclog
+	sbin/mpeinstall
+	sbin/mpecheckinstall
+	sbin/mpecheckbuild
+	etc/mpe_help.conf
+	etc/mpe_f77env.conf
+	$mpe_compilers ] )
+AC_OUTPUT
 
 configured_pkgs=""
 for pkg in $selected_pkgs ; do
